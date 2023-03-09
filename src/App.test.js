@@ -65,24 +65,26 @@ describe('Componente principal', () => {
 
             expect(saldo.textContent).toBe('R$ 1000')
 
-            fireEvent.click(transacao, {target: {value: 'saque'}});
-            fireEvent.change(valor, {target: {value: '10'}});
+            fireEvent.click(transacao, { target: { value: 'saque' } });
+            fireEvent.change(valor, { target: { value: '10' } });
             fireEvent.click(botaoTransacao);
 
             expect(saldo.textContent).toBe('R$ 990');
         });
 
-        it('que é um saque, a transação não deve ser relaizada', () => {
-            const { getByText, getByTestId, getByLabelText } = render(<App />)
-            const saldo = getByText('R$ 1000');
-            const transacao = getByLabelText('Saque');
-            const valor = getByTestId('valor');
-            const botaoTransacao = getByText('Realizar operação');
+        it('que é um saque maior que o saldo, o saldo será negativo', () => {
+            
+            render(<App />)
+
+            const saldo = screen.getByText('R$ 1000');
+            const transacao = screen.getByLabelText('Saque');
+            const valor = screen.getByTestId('valor');
+            const botaoTransacao = screen.getByText('Realizar operação');
 
             expect(saldo.textContent).toBe('R$ 1000')
 
-            fireEvent.click(transacao, {target: {value: 'saque'}});
-            fireEvent.change(valor, {target: {value: '1010'}});
+            fireEvent.click(transacao, { target: { value: 'saque' } });
+            fireEvent.change(valor, { target: { value: '1010' } });
             fireEvent.click(botaoTransacao);
 
             expect(saldo.textContent).toBe('R$ -10');
